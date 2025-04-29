@@ -1,11 +1,14 @@
+import { PlayCircleIcon } from 'lucide-react'
 import Container from './components/Container'
 import CountDown from './components/CountDown'
 import Cycles from './components/Cycles'
+import DefaultButton from './components/DefaultButton'
 import Input from './components/Input'
 import Logo from './components/Logo'
 import Menu from './components/Menu'
 import './styles/global.css'
 import './styles/theme.css'
+import Footer from './components/Footer'
 
 
 
@@ -26,7 +29,7 @@ export default function App(){
           <div className='formRow'>
            <Input 
               id='meuInput' 
-              type='text' 
+               type='text' 
               text='Task'
               placeholder='Digite a Task'
            />
@@ -38,9 +41,12 @@ export default function App(){
             <Cycles/>
           </div>
           <div className='formRow'>
-            <button>Enviar</button>
+            <DefaultButton icon={<PlayCircleIcon/>}/>
           </div>
         </form>
+      </Container>
+      <Container>
+        <Footer/>
       </Container>
     </>
   )
