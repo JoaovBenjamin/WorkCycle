@@ -1,4 +1,4 @@
-import { PlayCircleIcon } from "lucide-react";
+import { PlayCircleIcon, StopCircleIcon } from "lucide-react";
 import DefaultButton from "../DefaultButton";
 import Cycles from "../Cycles";
 import Input from "../Input";
@@ -17,6 +17,24 @@ export default function FormMain(){
 
   const nextCycle = getNextCycle(state.currentCycle)
   const nextCycleType = getNextCycleType(nextCycle)
+
+  function handleClickStopButton(event: React.MouseEvent<HTMLButtonElement, MouseEvent>){
+    event.preventDefault();
+    setState(prevState => {
+      return{
+        ...prevState,
+        activeTask: null,
+        secondsRemaining: 0,
+        formatedSecondsRemaining:"00:00",
+        tasks: prevState.tasks.map(task => {
+          if(prevState.activeTask && prevState.activeTask.id === task.id){
+            return {...task, interruptedAt: Date.now()}
+          }
+          return task
+        })
+      }
+    })
+  }
 
   function handleCreateNewTask(event: FormEvent<HTMLFormElement>){
       event.preventDefault();
@@ -62,6 +80,7 @@ export default function FormMain(){
               text='Task'
               placeholder='Digite a Task'
               ref={taskNameInput}
+              disabled={!!state.activeTask}
            />
           </div>
           <div className='formRow'>
@@ -73,7 +92,23 @@ export default function FormMain(){
           </div>
           )}
           <div className='formRow'>
-            <DefaultButton icon={<PlayCircleIcon/>}/>
+            {!state.activeTask && (
+               <DefaultButton 
+               type="submit" 
+               icon={<PlayCircleIcon/>}
+               aria-label="Iniciar uma nova tarefa"
+               title="Iniciar uma nova tarefa"/>)}
+              
+            {!!state.activeTask &&(
+              <DefaultButton 
+              type="button"
+              title="Parar um tarefa"
+              aria-label="Parar uma tarefa"
+              color="red"
+              icon={<StopCircleIcon/>}
+              onClick={handleClickStopButton}
+              />
+            )}                        
           </div>
         </form>
     )
