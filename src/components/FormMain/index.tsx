@@ -1,18 +1,18 @@
 import { PlayCircleIcon, StopCircleIcon } from "lucide-react";
-import DefaultButton from "../DefaultButton";
-import Cycles from "../Cycles";
-import Input from "../Input";
-import { FormEvent, useRef} from "react";
-import { TaskModel } from "../../models/TaskModel";
+import { FormEvent, useRef } from "react";
+import { TaskActionsTypes } from "../../contexts/TaskContext/taskActions";
 import { useTaskContext } from "../../contexts/TaskContext/useTaskContext";
+import { TaskModel } from "../../models/TaskModel";
 import getNextCycle from "../../utils/getNextCycle";
 import getNextCycleType from "../../utils/getNextCycleType";
-import { formatSecondsToMinutes } from "../../utils/formatSecondsToMinutes";
+import Cycles from "../Cycles";
+import DefaultButton from "../DefaultButton";
+import Input from "../Input";
 
 
 
 export default function FormMain(){
-  const { state,setState } = useTaskContext();
+  const { state, dispatch } = useTaskContext();
   const taskNameInput = useRef<HTMLInputElement>(null)
 
   const nextCycle = getNextCycle(state.currentCycle)
@@ -20,22 +20,9 @@ export default function FormMain(){
 
   function handleClickStopButton(event: React.MouseEvent<HTMLButtonElement, MouseEvent>){
     event.preventDefault();
-    setState(prevState => {
-      return{
-        ...prevState,
-        activeTask: null,
-        secondsRemaining: 0,
-        formatedSecondsRemaining:"00:00",
-        tasks: prevState.tasks.map(task => {
-          if(prevState.activeTask && prevState.activeTask.id === task.id){
-            return {...task, interruptedAt: Date.now()}
-          }
-          return task
-        })
-      }
-    })
+    dispatch({type:TaskActionsTypes.INTERRUPT_TASK})
   }
-
+    
   function handleCreateNewTask(event: FormEvent<HTMLFormElement>){
       event.preventDefault();
 
@@ -58,16 +45,8 @@ export default function FormMain(){
         type: nextCycleType
       }
 
-      const secondsRemaining = newTask.duration * 60
 
-      setState((prevState) => ({
-        ...prevState,
-        activeTask: newTask,
-        currentCycle: nextCycle,
-        secondsRemaining,
-        formatedSecondsRemaining: formatSecondsToMinutes(secondsRemaining),
-        tasks: [...prevState.tasks, newTask]
-      }))
+      dispatch({type: TaskActionsTypes.START_TASK, payload: newTask})
 
   }
 

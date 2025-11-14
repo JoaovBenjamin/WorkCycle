@@ -1,0 +1,19 @@
+import { TaskModel } from "../../models/TaskModel"
+
+export enum TaskActionsTypes {
+    START_TASK = 'START+TASK',
+    INTERRUPT_TASK = 'INTERRUPT_TASK',
+    RESET_STATE = 'RESERT_STATE'
+}
+
+export type TaskActionModel = 
+    |{  
+         type: TaskActionsTypes.START_TASK,
+         payload: TaskModel
+     }
+    |{
+        type: TaskActionsTypes.INTERRUPT_TASK,
+     }
+    | {
+        type: TaskActionsTypes.RESET_STATE,
+    } 
