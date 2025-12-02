@@ -8,6 +8,7 @@ import getNextCycleType from "../../utils/getNextCycleType";
 import Cycles from "../Cycles";
 import DefaultButton from "../DefaultButton";
 import Input from "../Input";
+import { Tips } from "../Tips";
 
 
 
@@ -63,7 +64,7 @@ export default function FormMain(){
            />
           </div>
           <div className='formRow'>
-            <p>Proxímo intervalo é </p>
+            <Tips/>
           </div>
           {state.currentCycle > 0 && (
               <div className='formRow'>
