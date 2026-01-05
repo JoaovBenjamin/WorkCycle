@@ -8,7 +8,6 @@ export function Tips() {
   const nextCycle = getNextCycle(state.currentCycle);
   const nextCyleType = getNextCycleType(nextCycle);
 
-  // Tips
   const tipsForWhenActiveTask = {
     focus: <span>Foque por {state.config.focus}min</span>,
     shortBreak: <span>Descanse por {state.config.shortBreak}min</span>,
